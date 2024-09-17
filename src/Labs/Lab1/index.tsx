@@ -133,6 +133,10 @@ export default function Lab1() {
                 <br/>
                 <img id="wd-teslabot" src="images/teslabot.jpg" height="200px"/>
             </div>
+            <h4>Anchor tag</h4>
+            Please <a id="wd-lipsum" href="https://www.lipsum.com">click here</a> to get dummy text<br/>
+            <h4>GitHub Repo</h4>
+            It can be located <a id="wd-github" href="https://github.com/hunter-neu/cs4550.git">here</a>.<br/>
             <Forms/>
         </div>
     );
