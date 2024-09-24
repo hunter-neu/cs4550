@@ -6,7 +6,7 @@ export default function Signin() {
             <h3>Sign in</h3>
             <input id={"wd-username"} placeholder={"username"}/><br/>
             <input id={"wd-password"} placeholder={"password"} type={"password"}/><br/>
-            <Link to={"/Kanbas/Account/Profile"}
+            <Link to={"/Kanbas/Dashboard"}
                   id={"wd-signin-btn"}>Sign in</Link><br/>
             <Link to={"/Kanbas/Account/Signup"}
                   id={"wd-signup-link"}>Sign up</Link>
