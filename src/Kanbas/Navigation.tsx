@@ -6,7 +6,6 @@ export default function KanbasNavigation() {
             <a href="https://www.northeastern.edu/" id="wd-neu-link" target="_blank">Northeastern</a><br/>
             <Link to={`/Kanbas/Account`}> Account </Link> <br/>
             <Link to={`/Kanbas/Dashboard`}> Dashboard </Link> <br/>
-        {/*    course calendar inbox*/}
             <Link to={`/Kanbas/Courses`}> Courses </Link> <br/>
             <Link to={`/Kanbas/Calendar`}> Calendar </Link> <br/>
             <Link to={`/Kanbas/Inbox`}> Inbox </Link> <br/>
