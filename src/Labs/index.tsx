@@ -8,6 +8,7 @@ export default function Labs() {
     return (
         <div id="wd-lab1">
             <h2>Hunter Pong</h2>
+            <h3>CS 4550 T/F 3:15-5:05</h3>
             <h1>Labs</h1>
             <TOC/>
             <Routes>
