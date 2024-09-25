@@ -7,6 +7,7 @@ import {Navigate, Route, Routes} from "react-router-dom";
 export default function Labs() {
     return (
         <div id="wd-lab1">
+            <h2>Hunter Pong</h2>
             <h1>Labs</h1>
             <TOC/>
             <Routes>
