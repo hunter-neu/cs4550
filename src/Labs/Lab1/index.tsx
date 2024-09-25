@@ -136,7 +136,7 @@ export default function Lab1() {
             <h4>Anchor tag</h4>
             Please <a id="wd-lipsum" href="https://www.lipsum.com">click here</a> to get dummy text<br/>
             <h4>GitHub Repo</h4>
-            It can be located <a id="wd-github" href="https://github.com/hunter-neu/cs4550.git">here</a>.<br/>
+            It can be located <a id="wd-github" href="https://github.com/hunter-neu/cs4550/tree/assignment-1">here</a>.<br/>
             <Forms/>
         </div>
     );
