@@ -9,7 +9,7 @@ export default function KanbasNavigation() {
             <Link to={`/Kanbas/Courses`}> Courses </Link> <br/>
             <Link to={`/Kanbas/Calendar`}> Calendar </Link> <br/>
             <Link to={`/Kanbas/Inbox`}> Inbox </Link> <br/>
-            <Link to={`/Kanbas/Labs`}> Labs </Link> <br/>
+            <Link to={`/Labs`}> Labs </Link> <br/>
         </div>
     )
 }
