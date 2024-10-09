@@ -42,6 +42,9 @@ p#wd-id-selector-2 {
 .wd-bg-color-gray {
     background-color: lightgray;
 }
+.wd-bg-color-darkgray {
+    background-color: darkgray;
+}
 .wd-border-fat {
     border-width: 20px 30px 20px 30px; }
 .wd-border-thin {
