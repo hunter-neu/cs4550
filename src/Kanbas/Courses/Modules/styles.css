@@ -1,0 +1,11 @@
+#wd-course-buttons button:hover {
+    background-color: dimgray;
+    color: white;
+}
+#wd-course-buttons button {
+    display: inline-block;
+    vertical-align: top;
+}
+#other-btns button {
+    border-radius: 4px;
+}
