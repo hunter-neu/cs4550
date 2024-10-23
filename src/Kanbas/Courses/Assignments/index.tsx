@@ -4,12 +4,15 @@ import ModuleControlButtons from "../Modules/ModuleControlButtons";
 import LessonControlButtons from "../Modules/LessonControlButtons";
 import {FaRegNewspaper} from "react-icons/fa";
 import {IoNewspaperOutline} from "react-icons/io5";
+import * as db from "../../Database";
+import {useParams} from "react-router-dom";
 
 export default function Assignments() {
+    const {cid} = useParams();
+    const assignments = db.assignments;
     return (
         <div id="wd-assignments">
             <AssignmentControls/>
-
             <ul id="wd-assignments" className="list-group rounded-0">
                 <li className="wd-module list-group-item p-0 mb-5 fs-5 border-gray">
                     <div className="wd-title p-3 ps-2 bg-white">
