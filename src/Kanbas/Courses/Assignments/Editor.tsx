@@ -1,18 +1,42 @@
-import {HiMagnifyingGlass} from "react-icons/hi2";
 import {RxCross2} from "react-icons/rx";
 import {BiCalendar} from "react-icons/bi";
 import SaveSubmitButtons from "./SaveSubmitButtons";
-import * as db from "../../Database";
 import {useParams} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
+import {useState} from "react";
+import {addAssignment, updateAssignment} from "./reducer";
 
 export default function AssignmentEditor() {
     const {cid, aid} = useParams();
-    const assignments = db.assignments;
-    const assignment = assignments.find(a => a._id === aid);
-    if (!assignment) return null;
+    const {assignments} = useSelector((state: any) => state.assignmentReducer);
+    const dispatch = useDispatch();
+    const maybeAssignment = assignments.find((a: any) => a._id === aid);
+    const [assignment, setAssignment] = useState(
+        {
+            _id: maybeAssignment?._id || new Date().getTime().toString(),
+            course: maybeAssignment?.course || cid,
+            title: maybeAssignment?.title || "New Assignment",
+            description: maybeAssignment?.description || "New Assignment Description",
+            points: maybeAssignment?.points || 100,
+            assignment_group: "Assignments",
+            display_grade_as: "Points",
+            submission_type: "Online",
+            entry_options: {
+                text_entry: true,
+                website_url: true,
+                media_recordings: true,
+                student_annotation: true,
+                file_uploads: true,
+            },
+            assign_to: ["Everyone"],
+            due: maybeAssignment?.date || new Date().toISOString(),
+            available_from: maybeAssignment?.available_from || new Date().toISOString(),
+            available_until: maybeAssignment?.available_until || new Date().toISOString(),
+        });
+    // setAssignment({...maybeAssignment}); this keeps causing an infinite loop somehow so I had to do it the ?.value || way
     const parseDate = (d: string) => {
         const date = new Date(d);
-        const month = date.toLocaleString('default', { month: 'long' });
+        const month = date.toLocaleString('default', {month: 'long'});
         return `${month} ${date.getDate()}, ${date.getFullYear()} ${date.getHours() % 12}:${date.getMinutes().toString().padStart(2, '0')} ${date.getHours() > 12 ? 'PM' : 'AM'}`;
     }
     return (
@@ -20,22 +44,12 @@ export default function AssignmentEditor() {
             <strong>Assignment Name</strong>
             <div className="input-group m-1 pe-3">
                 <input type="text" className="form-control"
-                       id="assignment-search" placeholder={assignment?.title}/>
+                       id="assignment-search" placeholder={assignment?.title} onChange={(x) => setAssignment({...assignment, title: x.target.value})}/>
             </div>
             <div className="mb-3 row">
                 <div className="col-sm-10">
                     <textarea className="form-control"
-                              id="textarea2" rows={6} placeholder="The assignment is available online.
-
-Submit a link to the landing page of your Web application running on Netlify.
-
-The landing page should include the following:
-
-Your full name and section
-Links to each of the lab assignments
-Link to the Kanbas application
-Links to all relevant source code repositories
-The Kanbas application should include a link to navigate back to the landing page."></textarea>
+                              id="textarea2" rows={6} placeholder={assignment?.description} onChange={(x) => setAssignment({...assignment, description: x.target.value})}></textarea>
                 </div>
             </div>
             <br/>
@@ -46,7 +60,7 @@ The Kanbas application should include a link to navigate back to the landing pag
                 <div className="col-9 float-start">
                     <div className="input-group m-1 pe-3 col-10">
                         <input type="text" className="form-control"
-                               id="icon" placeholder={`${assignment?.points}`}/>
+                               id="icon" placeholder={`${assignment?.points}`} onChange={(x) => setAssignment({...assignment, points: parseInt(x.target.value)})}/>
                     </div>
                 </div>
             </div>
@@ -153,7 +167,8 @@ The Kanbas application should include a link to navigate back to the landing pag
                                 <p className="p-3 float-start">Available From</p>
                                 <div className="col-6">
                                     <div className="input-group">
-                                        <input type="text" className="form-control" value={parseDate(assignment?.available_from)}/>
+                                        <input type="text" className="form-control"
+                                               value={parseDate(assignment?.available_from)}/>
                                         <span className="input-group-text"><BiCalendar/></span>
                                     </div>
                                 </div>
@@ -162,7 +177,8 @@ The Kanbas application should include a link to navigate back to the landing pag
                                 <p className="p-3 float-start">Until</p>
                                 <div className="col-6">
                                     <div className="input-group">
-                                        <input type="text" className="form-control" value={parseDate(assignment?.available_until)}/>
+                                        <input type="text" className="form-control"
+                                               value={parseDate(assignment?.available_until)}/>
                                         <span className="input-group-text"><BiCalendar/></span>
                                     </div>
                                 </div>
@@ -172,7 +188,11 @@ The Kanbas application should include a link to navigate back to the landing pag
                 </div>
             </div>
             <div id="save-submit">
-                <SaveSubmitButtons cid={cid}/>
+                <SaveSubmitButtons cid={cid} aid={aid} addAssignment={() => {
+                    dispatch(addAssignment({...assignment, course: cid}));
+                }} setAssignment={() => {
+                    dispatch(updateAssignment({...assignment, course: cid}));
+                }}/>
             </div>
         </div>
     )

@@ -7,31 +7,20 @@ import {IoNewspaperOutline} from "react-icons/io5";
 import * as db from "../../Database";
 import {useParams} from "react-router-dom";
 import {useState} from "react";
+import {useDispatch, useSelector} from "react-redux";
+import {deleteModule, editModule} from "../Modules/reducer";
 
 export default function Assignments() {
     const {cid} = useParams();
-    const assignments = db.assignments;
-    const [modules, setModules] = useState<any[]>(db.modules);
+    const {assignments} = useSelector((state: any) => state.assignmentReducer);
+    const {modules} = useSelector((state: any) => state.modulesReducer);
+    const dispatch = useDispatch();
     const [moduleName, setModuleName] = useState("");
-    const addModule = () => {
-        setModules([...modules, {
-            _id: new Date().getTime().toString(),
-            name: moduleName, course: cid, lessons: []
-        }])
-        setModuleName("");
-    }
-    const deleteModule = (moduleId: string) => {
-        setModules(modules.filter((m) => m._id !== moduleId));
-    }
-    const editModule = (module: any) => {
-        setModules(modules.map((m) => (m._id === module._id ? {...m, editing: true} : m)));
-    }
-    const updateModule = (module: any) => {
-        setModules(modules.map((m) => (m._id === module._id ? module : m)))
-    }
+    const {currentUser} = useSelector((state: any) => state.accountReducer);
+    console.log(assignments);
     return (
         <div id="wd-assignments">
-            <AssignmentControls/>
+            {(currentUser.role === "FACULTY" || currentUser.role === "ADMIN") && <AssignmentControls/>}
             <ul id="wd-assignments" className="list-group rounded-0">
                 <li className="wd-module list-group-item p-0 mb-5 fs-5 border-gray">
                     <div className="wd-title p-3 ps-2 bg-white">
@@ -44,8 +33,8 @@ export default function Assignments() {
                     </div>
                     <ul className="wd-assignments list-group rounded-0">
                         {assignments
-                            .filter((a) => a.course == cid)
-                            .map((assignment) => (
+                            .filter((a: any) => a.course === cid)
+                            .map((assignment: any) => (
                             <li className="wd-lesson list-group-item p-3 ps-1">
                                 <div className="row">
                                     <div className="col text-nowrap align-content-center">

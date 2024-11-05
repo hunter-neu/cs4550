@@ -6,20 +6,23 @@ import LessonControlButtons from "./LessonControlButtons";
 import {useParams} from "react-router-dom";
 import {useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {addModule, editModule, updateModule, deleteModule} from "./reducer";
+import {addModule, deleteModule, editModule, updateModule} from "./reducer";
 
 export default function Modules() {
     const {cid} = useParams();
     const [moduleName, setModuleName] = useState("");
-    const { modules } = useSelector((state: any) => state.modulesReducer);
+    const {modules} = useSelector((state: any) => state.modulesReducer);
     const dispatch = useDispatch();
+    const {currentUser} = useSelector((state: any) => state.accountReducer);
+    const isFaculty = currentUser.role === "FACULTY" || currentUser.role === "ADMIN";
     return (
         <div id="wd-modules">
             <div>
+                {isFaculty &&
                 <ModulesControls setModuleName={setModuleName} moduleName={moduleName} addModule={() => {
-                    dispatch(addModule({ name: moduleName, course: cid }));
+                    dispatch(addModule({name: moduleName, course: cid}));
                     setModuleName("");
-                }}/><br/><br/><br/><br/>
+                }}/>}<br/><br/><br/><br/>
                 <ul id="wd-modules" className="list-group rounded-0">
                     {modules
                         .filter((module: any) => (module.course === cid))
@@ -30,7 +33,10 @@ export default function Modules() {
                                     {!module.editing && module.name}
                                     {module.editing && (
                                         <input className="form control w-50 d-inline-block"
-                                               onChange={(e) => dispatch(updateModule({...module, name: e.target.value}))}
+                                               onChange={(e) => dispatch(updateModule({
+                                                   ...module,
+                                                   name: e.target.value
+                                               }))}
                                                onKeyDown={(e) => {
                                                    if (e.key === "Enter") {
                                                        dispatch(updateModule({...module, editing: false}))
