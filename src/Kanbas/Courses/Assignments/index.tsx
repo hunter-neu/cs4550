@@ -6,10 +6,29 @@ import {FaRegNewspaper} from "react-icons/fa";
 import {IoNewspaperOutline} from "react-icons/io5";
 import * as db from "../../Database";
 import {useParams} from "react-router-dom";
+import {useState} from "react";
 
 export default function Assignments() {
     const {cid} = useParams();
     const assignments = db.assignments;
+    const [modules, setModules] = useState<any[]>(db.modules);
+    const [moduleName, setModuleName] = useState("");
+    const addModule = () => {
+        setModules([...modules, {
+            _id: new Date().getTime().toString(),
+            name: moduleName, course: cid, lessons: []
+        }])
+        setModuleName("");
+    }
+    const deleteModule = (moduleId: string) => {
+        setModules(modules.filter((m) => m._id !== moduleId));
+    }
+    const editModule = (module: any) => {
+        setModules(modules.map((m) => (m._id === module._id ? {...m, editing: true} : m)));
+    }
+    const updateModule = (module: any) => {
+        setModules(modules.map((m) => (m._id === module._id ? module : m)))
+    }
     return (
         <div id="wd-assignments">
             <AssignmentControls/>
@@ -18,7 +37,10 @@ export default function Assignments() {
                     <div className="wd-title p-3 ps-2 bg-white">
                         <BsGripVertical className="me-2 fs-3"/>
                         ASSIGNMENTS
-                        <ModuleControlButtons/>
+                        <ModuleControlButtons
+                            moduleId={module.id}
+                            deleteModule={deleteModule}
+                            editModule={editModule}/>
                     </div>
                     <ul className="wd-assignments list-group rounded-0">
                         {assignments
