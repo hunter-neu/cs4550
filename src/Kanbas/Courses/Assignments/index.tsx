@@ -11,7 +11,6 @@ export default function Assignments() {
     const {cid} = useParams();
     const {assignments} = useSelector((state: any) => state.assignmentReducer);
     const dispatch = useDispatch();
-    const [moduleName, setModuleName] = useState("");
     const {currentUser} = useSelector((state: any) => state.accountReducer);
     const parseDate = (d: string) => {
         const date = new Date(d);
@@ -68,8 +67,8 @@ export default function Assignments() {
                                         <div className="col-2">
                                             <LessonControlButtons
                                                 assignmentId={assignment._id}
-                                                deleteAssignment={() => {
-                                                    dispatch(deleteAssignment(assignment._id));
+                                                deleteAssignment={(aid) => {
+                                                    dispatch(deleteAssignment(aid));
                                                 }}/>
                                         </div>
                                     </div>
