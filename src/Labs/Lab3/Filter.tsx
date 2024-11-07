@@ -6,8 +6,10 @@ export default function FilterFunction() {
     return (
         <div id="wd-filter-function">
             <h4>Filter Function</h4>
-            numbersGreaterThan2 = {numbersGreaterThan2}  <br />
-            evenNumbers = {evenNumbers}    <br />
-            oddNumbers = {oddNumbers}      <hr />
+            numbersGreaterThan2 = {numbersGreaterThan2} <br/>
+            evenNumbers = {evenNumbers} <br/>
+            oddNumbers = {oddNumbers}
+            <hr/>
         </div>
-    );}
+    );
+}

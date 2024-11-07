@@ -5,7 +5,7 @@ import AddRedux from "./AddRedux";
 import TodoList from "./todos/TodoList";
 
 export default function ReduxExamples() {
-    return(
+    return (
         <div>
             <h2>Redux Examples</h2>
             <HelloRedux/>

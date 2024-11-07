@@ -3,13 +3,12 @@ import {BsGripVertical} from "react-icons/bs";
 import LessonControlButtons from "../Modules/LessonControlButtons";
 import {IoNewspaperOutline} from "react-icons/io5";
 import {useParams} from "react-router-dom";
-import {useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {deleteAssignment} from "./reducer";
 
 export default function Assignments() {
     const {cid} = useParams();
-    const {assignments} = useSelector((state: any) => state.assignmentReducer);
+    const {assignments} = useSelector((state: any) => state.assignmentsReducer);
     const dispatch = useDispatch();
     const {currentUser} = useSelector((state: any) => state.accountReducer);
     const parseDate = (d: string) => {

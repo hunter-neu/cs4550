@@ -1,5 +1,5 @@
 export default function PassingFunctions(
-    { theFunction }: { theFunction: () => void }) {
+    {theFunction}: { theFunction: () => void }) {
     return (
         <div>
             <h2>Passing Functions</h2>
@@ -8,4 +8,5 @@ export default function PassingFunctions(
             </button>
             <hr/>
         </div>
-    );}
+    );
+}

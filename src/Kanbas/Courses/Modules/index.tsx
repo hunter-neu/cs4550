@@ -2,7 +2,6 @@ import "./styles.css";
 import ModulesControls from "./ModulesControls";
 import {BsGripVertical} from "react-icons/bs";
 import ModuleControlButtons from "./ModuleControlButtons";
-import LessonControlButtons from "./LessonControlButtons";
 import {useParams} from "react-router-dom";
 import {useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
@@ -19,10 +18,10 @@ export default function Modules() {
         <div id="wd-modules">
             <div>
                 {isFaculty &&
-                <ModulesControls setModuleName={setModuleName} moduleName={moduleName} addModule={() => {
-                    dispatch(addModule({name: moduleName, course: cid}));
-                    setModuleName("");
-                }}/>}<br/><br/><br/><br/>
+                    <ModulesControls setModuleName={setModuleName} moduleName={moduleName} addModule={() => {
+                        dispatch(addModule({name: moduleName, course: cid}));
+                        setModuleName("");
+                    }}/>}<br/><br/><br/><br/>
                 <ul id="wd-modules" className="list-group rounded-0">
                     {modules
                         .filter((module: any) => (module.course === cid))

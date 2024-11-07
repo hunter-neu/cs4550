@@ -31,7 +31,9 @@ export default function Signin() {
             <button onClick={signin}
                     id="wd-signin-btn"
                     className="btn btn-primary w-100 mb-2">
-                Sign in </button><br/>
+                Sign in
+            </button>
+            <br/>
             <Link id="wd-signup-link" to="/Kanbas/Account/Signup"
                   className="btn btn-primary w-100">Sign up</Link>
         </div>

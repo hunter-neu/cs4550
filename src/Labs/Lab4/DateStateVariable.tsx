@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, {useState} from "react";
+
 export default function DateStateVariable() {
     const [startDate, setStartDate] = useState(new Date());
     const dateObjectToHtmlDateString = (date: Date) => {
@@ -17,4 +18,6 @@ export default function DateStateVariable() {
                 defaultValue={dateObjectToHtmlDateString(startDate)}
                 onChange={(e) => setStartDate(new Date(e.target.value))}
             />
-            <hr/></div>);}
+            <hr/>
+        </div>);
+}

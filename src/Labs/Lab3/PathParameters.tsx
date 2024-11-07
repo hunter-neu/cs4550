@@ -1,4 +1,4 @@
-import {Routes, Route, Link} from "react-router-dom";
+import {Link, Route, Routes} from "react-router-dom";
 import AddPathParameters from "./AddPathParameters";
 
 export default function PathParameters() {

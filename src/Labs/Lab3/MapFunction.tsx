@@ -7,14 +7,15 @@ export default function MapFunction() {
     return (
         <div id="wd-map-function">
             <h4>Map Function</h4>
-            squares = {squares} <br />
-            cubes = {cubes} <br />
+            squares = {squares} <br/>
+            cubes = {cubes} <br/>
             Todos:
             <ol>
                 {todos.map((todo) => (
                     <li>{todo}</li>
                 ))}
-            </ol> <hr/>
+            </ol>
+            <hr/>
         </div>
     );
 }

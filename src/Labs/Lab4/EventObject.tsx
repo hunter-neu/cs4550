@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, {useState} from "react";
+
 export default function EventObject() {
     const [event, setEvent] = useState(null);
     const handleClick = (e: any) => {
@@ -17,4 +18,5 @@ export default function EventObject() {
             <pre>{JSON.stringify(event, null, 2)}</pre>
             <hr/>
         </div>
-    );}
+    );
+}

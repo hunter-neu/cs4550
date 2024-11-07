@@ -7,10 +7,13 @@ export default function TodoForm() {
     return (
         <li className="list-group-item">
             <button onClick={() => dispatch(addTodo(todo))}
-                    id="wd-add-todo-click"> Add </button>
+                    id="wd-add-todo-click"> Add
+            </button>
             <button onClick={() => dispatch(updateTodo(todo))}
-                    id="wd-update-todo-click"> Update </button>
+                    id="wd-update-todo-click"> Update
+            </button>
             <input value={todo.title}
-                   onChange={ (e) => dispatch(setTodo({ ...todo, title: e.target.value })) }/>
+                   onChange={(e) => dispatch(setTodo({...todo, title: e.target.value}))}/>
         </li>
-    );}
+    );
+}

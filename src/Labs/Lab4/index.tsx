@@ -15,6 +15,7 @@ export default function Lab4() {
     function sayHello() {
         alert("Hello")
     }
+
     return (
         <div>
             <ClickEvent/>

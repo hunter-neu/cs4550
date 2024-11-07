@@ -16,7 +16,7 @@ export default function ModulesControls({moduleName, setModuleName, addModule}:
                 Module
             </button>
             <ModuleEditor dialogTitle="Add Module" moduleName={moduleName}
-                          setModuleName={setModuleName} addModule={addModule} />
+                          setModuleName={setModuleName} addModule={addModule}/>
             <div className="dropdown d-inline me-1 float-end">
                 <button id="wd-publish-all-btn" className="btn btn-lg btn-secondary dropdown-toggle"
                         type="button" data-bs-toggle="dropdown">

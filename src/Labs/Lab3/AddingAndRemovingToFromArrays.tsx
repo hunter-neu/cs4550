@@ -10,9 +10,11 @@ export default function AddingAndRemovingToFromArrays() {
     return (
         <div id="wd-adding-removing-from-arrays">
             <h4>Add/remove to/from arrays</h4>
-            numberArray1 = {numberArray1} <br />
-            stringArray1 = {stringArray1} <br />
+            numberArray1 = {numberArray1} <br/>
+            stringArray1 = {stringArray1} <br/>
             Todo list:
-            <ol>{todoArray}</ol><hr />
+            <ol>{todoArray}</ol>
+            <hr/>
         </div>
-    );}
+    );
+}

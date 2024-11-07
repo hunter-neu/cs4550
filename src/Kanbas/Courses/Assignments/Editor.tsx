@@ -1,5 +1,4 @@
 import {RxCross2} from "react-icons/rx";
-import {BiCalendar} from "react-icons/bi";
 import SaveSubmitButtons from "./SaveSubmitButtons";
 import {useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
@@ -8,7 +7,7 @@ import {addAssignment, updateAssignment} from "./reducer";
 
 export default function AssignmentEditor() {
     const {cid, aid} = useParams();
-    const {assignments} = useSelector((state: any) => state.assignmentReducer);
+    const {assignments} = useSelector((state: any) => state.assignmentsReducer);
     const dispatch = useDispatch();
     const maybeAssignment = assignments.find((a: any) => a._id === aid);
     const parseDate = (d: string) => {

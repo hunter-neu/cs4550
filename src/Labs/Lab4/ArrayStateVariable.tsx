@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, {useState} from "react";
+
 export default function ArrayStateVariable() {
     const [array, setArray] = useState([1, 2, 3, 4, 5]);
     const addElement = () => {
@@ -17,7 +18,8 @@ export default function ArrayStateVariable() {
                         {item}
                         <button onClick={() => deleteElement(index)}
                                 id="wd-delete-element-click">
-                            Delete</button>
+                            Delete
+                        </button>
                     </li>
                 ))}
             </ul>

@@ -1,10 +1,11 @@
-import { createSlice } from "@reduxjs/toolkit";
+import {createSlice} from "@reduxjs/toolkit";
+
 const initialState = {
     todos: [
-        { id: "1", title: "Learn React" },
-        { id: "2", title: "Learn Node" },
+        {id: "1", title: "Learn React"},
+        {id: "2", title: "Learn Node"},
     ],
-    todo: { title: "Learn Mongo" },
+    todo: {title: "Learn Mongo"},
 };
 const todosSlice = createSlice({
     name: "todos",
@@ -13,10 +14,10 @@ const todosSlice = createSlice({
         addTodo: (state, action) => {
             const newTodos = [
                 ...state.todos,
-                { ...action.payload, id: new Date().getTime().toString() },
+                {...action.payload, id: new Date().getTime().toString()},
             ];
             state.todos = newTodos;
-            state.todo = { title: "" };
+            state.todo = {title: ""};
         },
         deleteTodo: (state, action) => {
             const newTodos = state.todos.filter((todo) => todo.id !== action.payload);
@@ -27,12 +28,12 @@ const todosSlice = createSlice({
                 item.id === action.payload.id ? action.payload : item
             );
             state.todos = newTodos;
-            state.todo = { title: "" };
+            state.todo = {title: ""};
         },
         setTodo: (state, action) => {
             state.todo = action.payload;
         },
     },
 });
-export const { addTodo, deleteTodo, updateTodo, setTodo } = todosSlice.actions;
+export const {addTodo, deleteTodo, updateTodo, setTodo} = todosSlice.actions;
 export default todosSlice.reducer;

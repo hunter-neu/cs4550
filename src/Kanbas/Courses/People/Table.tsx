@@ -1,11 +1,11 @@
 import {FaUserCircle} from "react-icons/fa";
-import { useParams } from "react-router-dom";
+import {useParams} from "react-router-dom";
 import * as db from "../../Database";
 import {useSelector} from "react-redux";
 
 export default function PeopleTable() {
-    const { cid } = useParams();
-    const { users, enrollments } = db;
+    const {cid} = useParams();
+    const {users, enrollments} = db;
     const {currentUser} = useSelector((state: any) => state.accountReducer);
     const isFaculty = currentUser.role === "FACULTY" || currentUser.role === "ADMIN";
     return (

@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, {useState} from "react";
+
 export default function StringStateVariables() {
     const [firstName, setFirstName] = useState("John");
     return (
@@ -9,4 +10,6 @@ export default function StringStateVariables() {
                 className="form-control"
                 defaultValue={firstName}
                 onChange={(e) => setFirstName(e.target.value)}/>
-            <hr/></div>);}
+            <hr/>
+        </div>);
+}

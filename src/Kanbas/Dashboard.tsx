@@ -1,6 +1,7 @@
 import {Link} from "react-router-dom";
-import * as db from "./Database";
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
+import {useState} from "react";
+import {addEnrollment, deleteEnrollment} from "./Courses/People/reducer";
 
 export default function Dashboard(
     {courses, course, setCourse, addNewCourse, deleteCourse, updateCourse}: {
@@ -10,8 +11,17 @@ export default function Dashboard(
     }
 ) {
     const {currentUser} = useSelector((state: any) => state.accountReducer);
-    const {enrollments} = db;
+    const {enrollments} = useSelector((state: any) => state.enrollmentsReducer);
     const isFaculty = currentUser.role === "FACULTY" || currentUser.role === "ADMIN";
+    const dispatch = useDispatch();
+    const [showAll, setShowAll] = useState(false);
+    const getEnrollment = (course: { _id: any; }) => {
+        return enrollments.find(
+            (enrollment: any) =>
+                enrollment.user === currentUser._id &&
+                enrollment.course === course._id
+        )
+    }
     return (
         <div id="wd-dashboard">
             <h1 id="wd-dashboard-title">Dashboard</h1>
@@ -32,6 +42,14 @@ export default function Dashboard(
                 <textarea value={course.description} className="form-control"
                           onChange={(e) => setCourse({...course, description: e.target.value})}/>
             </div>}
+            {!isFaculty &&
+                <button id="wd-view-courses"
+                        onClick={() => {
+                            setShowAll(!showAll);
+                        }}
+                        className="btn btn-primary me-2 float-end">
+                    Enrollments
+                </button>}
             <h2 id="wd-dashboard-published">Published Courses ({courses.length})</h2>
             <hr/>
             <div id="wd-dashboard-courses" className="row">
@@ -39,10 +57,12 @@ export default function Dashboard(
                     {courses
                         .filter((course) =>
                             enrollments.some(
-                                (enrollment) =>
-                                    enrollment.user === currentUser._id &&
-                                    enrollment.course === course._id
+                                (enrollment: any) =>
+                                    showAll ||
+                                    (enrollment.user === currentUser._id &&
+                                        enrollment.course === course._id)
                             ))
+
                         .map((course) => (
                             <div className="wd-dashboard-course col" style={{width: "300px"}}>
                                 <div className="card h-100 rounded-3 overflow-hidden">
@@ -76,6 +96,24 @@ export default function Dashboard(
                                                         }}
                                                         className="btn btn-warning me-2 float-end">
                                                     Edit
+                                                </button>}
+                                            {!isFaculty && showAll &&
+                                                <button id="wd-edit-course-click"
+                                                        onClick={(event) => {
+                                                            event.preventDefault();
+                                                            console.log("Enrollment course:", course)
+                                                            const enrollment = getEnrollment(course);
+                                                            if (!enrollment) {
+                                                                dispatch(addEnrollment({
+                                                                    user: currentUser._id,
+                                                                    course: course._id
+                                                                }))
+                                                            } else {
+                                                                dispatch(deleteEnrollment(enrollment._id));
+                                                            }
+                                                        }}
+                                                        className="btn btn-warning me-2 float-end">
+                                                    {getEnrollment(course) ? "Unenroll" : "Enroll"}
                                                 </button>}
                                         </div>
                                     </Link>

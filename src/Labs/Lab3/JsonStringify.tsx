@@ -4,7 +4,7 @@ export default function JsonStringify() {
         <div className="wd-json-stringify">
             <h3>JSON Stringify</h3>
             squares = {JSON.stringify(squares)}
-            <hr />
+            <hr/>
         </div>
     );
 }
