@@ -66,7 +66,7 @@ export default function Assignments() {
                                         </div>
                                         <div className="col-2">
                                             <LessonControlButtons
-                                                assignmentId={assignment._id}
+                                                assignment={assignment}
                                                 deleteAssignment={(aid) => {
                                                     dispatch(deleteAssignment(aid));
                                                 }}/>
