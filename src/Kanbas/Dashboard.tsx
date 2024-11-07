@@ -63,7 +63,7 @@ export default function Dashboard(
                                         enrollment.course === course._id)
                             ))
                         .sort((c1, c2) => {
-                            if(getEnrollment(c1)) {
+                            if (getEnrollment(c1)) {
                                 return getEnrollment(c2) ? 0 : -1;
                             } else {
                                 return getEnrollment(c2) ? 1 : 0;
@@ -74,7 +74,7 @@ export default function Dashboard(
                                 <div className="card h-100 rounded-3 overflow-hidden">
                                     <Link className="wd-dashboard-course-link
                             text-decoration-none text-dark"
-                                          to={`/Kanbas/Courses/${course._id}/Home`}>
+                                          to={getEnrollment(course) ? `/Kanbas/Courses/${course._id}/Home` : `/Kanbas/Dashboard`}>
                                         <img alt="image" src="/images/reactjs.png" width="100%" height={160}/>
                                         <div className="card-body">
                                             <h5 className="wd-dashboard-course-title card-title">
