@@ -62,7 +62,13 @@ export default function Dashboard(
                                     (enrollment.user === currentUser._id &&
                                         enrollment.course === course._id)
                             ))
-
+                        .sort((c1, c2) => {
+                            if(getEnrollment(c1)) {
+                                return getEnrollment(c2) ? 0 : -1;
+                            } else {
+                                return getEnrollment(c2) ? 1 : 0;
+                            }
+                        })
                         .map((course) => (
                             <div className="wd-dashboard-course col" style={{width: "300px"}}>
                                 <div className="card h-100 rounded-3 overflow-hidden">
