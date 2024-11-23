@@ -4,12 +4,6 @@ import React from "react";
 import {Link, useParams} from "react-router-dom";
 
 export default function AssignmentControls() {
-// ({assignmentName, setAssignmentName, addAssignment}:
-//                                                {
-//                                                    assignmentName: string;
-//                                                    setAssignmentName: (title: string) => void;
-//                                                    addAssignment: () => void;
-//                                                }) {
     const {cid} = useParams();
     return (
         <div id="wd-modules-controls" className="text-nowrap">

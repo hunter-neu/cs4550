@@ -9,7 +9,7 @@ export default function KanbasNavigation() {
     const {pathname} = useLocation();
     const links = [
         {label: "Dashboard", path: "/Kanbas/Dashboard", icon: AiOutlineDashboard},
-        {label: "Courses", path: "/Kanbas/Courses", icon: LiaBookSolid},
+        {label: "Courses", path: "/Kanbas/Dashboard", icon: LiaBookSolid},
         {label: "Calendar", path: "/Kanbas/Calendar", icon: IoCalendarOutline},
         {label: "Inbox", path: "/Kanbas/Inbox", icon: FaInbox},
         {label: "Labs", path: "/Labs", icon: LiaCogSolid},

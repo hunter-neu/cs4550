@@ -4,13 +4,30 @@ import LessonControlButtons from "../Modules/LessonControlButtons";
 import {IoNewspaperOutline} from "react-icons/io5";
 import {useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-import {deleteAssignment} from "./reducer";
+import {useEffect, useState} from "react";
+import * as assignmentClient from "./client";
+import {deleteAssignment, setAssignments} from "./reducer";
 
 export default function Assignments() {
     const {cid} = useParams();
+    const {currentUser} = useSelector((state: any) => state.accountReducer);
     const {assignments} = useSelector((state: any) => state.assignmentsReducer);
     const dispatch = useDispatch();
-    const {currentUser} = useSelector((state: any) => state.accountReducer);
+    const fetchAssignments = async () => {
+        try {
+            const assignments = await assignmentClient.getAssignments(cid);
+            dispatch(setAssignments(assignments));
+        } catch (error) {
+            console.error(error);
+        }
+    };
+    const removeAssignment = async (aid: any) => {
+        await assignmentClient.deleteAssignment(cid, aid);
+        dispatch(deleteAssignment(assignments));
+    };
+    useEffect(() => {
+        fetchAssignments();
+    }, []);
     const parseDate = (d: string) => {
         const date = new Date(d);
         if (isNaN(date.getTime())) {
@@ -33,7 +50,6 @@ export default function Assignments() {
                     </div>
                     <ul className="wd-assignments list-group rounded-0">
                         {assignments
-                            .filter((a: any) => a.course === cid)
                             .map((assignment: any) => (
                                 <li className="wd-lesson list-group-item p-3 ps-1">
                                     <div className="row">
@@ -67,7 +83,7 @@ export default function Assignments() {
                                             <LessonControlButtons
                                                 assignment={assignment}
                                                 deleteAssignment={(aid) => {
-                                                    dispatch(deleteAssignment(aid));
+                                                    removeAssignment(aid);
                                                 }}/>
                                         </div>
                                     </div>

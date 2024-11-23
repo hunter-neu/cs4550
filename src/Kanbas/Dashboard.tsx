@@ -55,13 +55,6 @@ export default function Dashboard(
             <div id="wd-dashboard-courses" className="row">
                 <div className="row row-cols-1 row-cols-md-5 g-4">
                     {courses
-                        .filter((course) =>
-                            enrollments.some(
-                                (enrollment: any) =>
-                                    showAll ||
-                                    (enrollment.user === currentUser._id &&
-                                        enrollment.course === course._id)
-                            ))
                         .sort((c1, c2) => {
                             if (getEnrollment(c1)) {
                                 return getEnrollment(c2) ? 0 : -1;
