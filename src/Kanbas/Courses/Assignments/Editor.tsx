@@ -2,31 +2,32 @@ import {RxCross2} from "react-icons/rx";
 import SaveSubmitButtons from "./SaveSubmitButtons";
 import {useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-import {useState} from "react";
-import {addAssignment, updateAssignment} from "./reducer";
+import {useEffect, useState} from "react";
+import {addAssignment, setAssignments, updateAssignment} from "./reducer";
 import * as assignmentClient from "../Assignments/client";
+import * as coursesClient from "../client";
+import {addModule} from "../Modules/reducer";
 
 export default function AssignmentEditor() {
     const {cid, aid} = useParams();
     const {assignments} = useSelector((state: any) => state.assignmentsReducer);
     const dispatch = useDispatch();
-    const maybeAssignment = assignments.find((a: any) => a._id === aid);
     const parseDate = (d: string) => {
         const date = new Date(d);
         return `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}T${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}:${date.getSeconds().toString().padStart(2, '0')}`;
     }
     const now = parseDate(new Date().toISOString());
-    const saveAssignment = async (module: any) => {
-        await assignmentClient.updateAssignment(cid, module);
-        dispatch(updateAssignment(module));
+    const saveAssignment = async (assignment: any) => {
+        await assignmentClient.updateAssignment(cid, assignment);
+        dispatch(updateAssignment(assignment));
     }
-    const [assignment, setAssignment] = useState(
-        {
-            _id: maybeAssignment?._id || new Date().getTime().toString(),
-            course: maybeAssignment?.course || cid,
-            title: maybeAssignment?.title || "New Assignment",
-            description: maybeAssignment?.description || "New Assignment Description",
-            points: maybeAssignment?.points || 100,
+    const createAssignmentForCourse = async () => {
+        if (!cid) return;
+        const newAssignment = {
+            course: cid,
+            title: "New Assignment",
+            description: "New Assignment Description",
+            points: 100,
             assignment_group: "Assignments",
             display_grade_as: "Points",
             submission_type: "Online",
@@ -38,11 +39,24 @@ export default function AssignmentEditor() {
                 file_uploads: true,
             },
             assign_to: ["Everyone"],
-            due: maybeAssignment?.due || now,
-            available_from: maybeAssignment?.available_from || now,
-            available_until: maybeAssignment?.available_until || now,
-        });
-    // setAssignment({...maybeAssignment}); this keeps causing an infinite loop somehow so I had to do it the ?.value || way
+            due: now,
+            available_from: now,
+            available_until: now,
+        };
+        const assignment = await assignmentClient.createAssignment(cid, newAssignment);
+        console.log("Got Assignment ID", assignment?.id)
+        dispatch(addAssignment(assignment));
+        console.log("Got Assignment", assignment)
+        setAssignment(assignment);
+    };
+    const [assignment, setAssignment] = useState(assignments.find((a: any) => a._id === aid));
+    console.log(assignment?._id);
+    useEffect(() => {
+        if (aid === "New") {
+            createAssignmentForCourse();
+            console.log("Got Assignment after", assignment)
+        }
+    }, []);
     return (
         <div id="wd-assignments-editor">
             <strong>Assignment Name</strong>
@@ -203,9 +217,9 @@ export default function AssignmentEditor() {
             </div>
             <div id="save-submit">
                 <SaveSubmitButtons cid={cid} aid={aid} addAssignment={() => {
-                    dispatch(addAssignment({...assignment, course: cid}));
+                    dispatch(addAssignment(assignment));
                 }} setAssignment={() => {
-                    dispatch(updateAssignment({...assignment, course: cid}));
+                    saveAssignment(assignment);
                 }}/>
             </div>
         </div>
