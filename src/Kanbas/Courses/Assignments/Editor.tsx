@@ -4,6 +4,7 @@ import {useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {useState} from "react";
 import {addAssignment, updateAssignment} from "./reducer";
+import * as assignmentClient from "../Assignments/client";
 
 export default function AssignmentEditor() {
     const {cid, aid} = useParams();
@@ -15,7 +16,10 @@ export default function AssignmentEditor() {
         return `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}T${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}:${date.getSeconds().toString().padStart(2, '0')}`;
     }
     const now = parseDate(new Date().toISOString());
-    console.log(now);
+    const saveAssignment = async (module: any) => {
+        await assignmentClient.updateAssignment(cid, module);
+        dispatch(updateAssignment(module));
+    }
     const [assignment, setAssignment] = useState(
         {
             _id: maybeAssignment?._id || new Date().getTime().toString(),

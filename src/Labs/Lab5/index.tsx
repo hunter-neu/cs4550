@@ -19,13 +19,13 @@ export default function Lab5() {
                     Welcome
                 </a>
             </div><hr/>
-            {/*<EnvironmentVariables/>*/}
-            {/*<PathParameters/>*/}
-            {/*<QueryParameters/>*/}
-            {/*<WorkingWithObjects/>*/}
-            {/*<ModuleStruct/>*/}
-            {/*<WorkingWithArrays/>*/}
-            {/*<HttpClient/>*/}
+            <EnvironmentVariables/>
+            <PathParameters/>
+            <QueryParameters/>
+            <WorkingWithObjects/>
+            <ModuleStruct/>
+            <WorkingWithArrays/>
+            <HttpClient/>
             <WorkingWithObjectsAsynchronously/>
             <WorkingWithArraysAsynchronously/>
         </div>
