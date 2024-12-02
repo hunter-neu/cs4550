@@ -21,17 +21,16 @@ export default function Assignments() {
         await assignmentClient.deleteAssignment(cid, aid);
         dispatch(deleteAssignment(assignments));
         window.location.reload();
-        console.log("reloaded")
     };
     useEffect(() => {
         fetchAssignments();
     }, []);
     const parseDate = (d: string) => {
+        d = d.replace(/(\r\n|\n|\r|\s)/gm, "");
         const date = new Date(d);
         if (isNaN(date.getTime())) {
             const re = /(\d+)-(\d+)-(\d+)T(\d+):(\d+):(\d+).*/;
             const [, year, month, day, hour, minute, second] = re.exec(d) as any;
-            console.log(year, month, day, hour, minute, second);
             return `${month}/${day}/${year} at ${hour}:${minute}:${second}`;
         }
         const month = date.toLocaleString('default', {month: 'long'});

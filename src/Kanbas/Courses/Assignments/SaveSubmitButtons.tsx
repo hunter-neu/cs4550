@@ -1,15 +1,14 @@
 import {Link} from "react-router-dom";
 
-export default function SaveSubmitButtons({cid, aid, setAssignment, addAssignment}:
+export default function SaveSubmitButtons({cid, aid, setAssignment}:
                                               {
                                                   cid: any,
                                                   aid: any;
                                                   setAssignment: any;
-                                                  addAssignment: any;
                                               }) {
     return (
         <div id="wd-modules-controls" className="text-nowrap">
-            <Link onClick={aid === "New" ? addAssignment : setAssignment} to={`/Kanbas/Courses/${cid}/Assignments`}
+            <Link onClick={setAssignment} to={`/Kanbas/Courses/${cid}/Assignments`}
                   id="wd-view-progress"
                   className="btn btn-lg btn-danger me-1 float-end">
                 Save</Link>

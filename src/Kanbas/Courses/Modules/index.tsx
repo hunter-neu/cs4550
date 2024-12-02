@@ -28,13 +28,13 @@ export default function Modules() {
         const modules = await coursesClient.findModulesForCourse(cid as string);
         dispatch(setModules(modules));
     }
+    useEffect(() => {
+        fetchModules();
+    }, []);
     const saveModule = async (module: any) => {
         await modulesClient.updateModule(module);
         dispatch(updateModule(module));
     }
-    useEffect(() => {
-        fetchModules();
-    }, []);
     const {currentUser} = useSelector((state: any) => state.accountReducer);
     const isFaculty = currentUser.role === "FACULTY" || currentUser.role === "ADMIN";
     return (

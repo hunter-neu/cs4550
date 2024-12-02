@@ -1,61 +1,63 @@
 import {RxCross2} from "react-icons/rx";
 import SaveSubmitButtons from "./SaveSubmitButtons";
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {useEffect, useState} from "react";
 import {addAssignment, setAssignments, updateAssignment} from "./reducer";
 import * as assignmentClient from "../Assignments/client";
-import * as coursesClient from "../client";
-import {addModule} from "../Modules/reducer";
+
 
 export default function AssignmentEditor() {
-    const {cid, aid} = useParams();
-    const {assignments} = useSelector((state: any) => state.assignmentsReducer);
-    const dispatch = useDispatch();
     const parseDate = (d: string) => {
         const date = new Date(d);
         return `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}T${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}:${date.getSeconds().toString().padStart(2, '0')}`;
     }
     const now = parseDate(new Date().toISOString());
+    const {cid, aid} = useParams();
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const [assignmentId, setAssignmentId] = useState(aid);
+    const [assignment, setAssignment] = useState<any>();
+    const fetchAssignments = async () => {
+        if (!cid) return;
+        if (assignmentId === "New") {
+            const newAssignment = {
+                course: cid,
+                title: "New Assignment",
+                description: "New Assignment Description",
+                points: 100,
+                assignment_group: "Assignments",
+                display_grade_as: "Points",
+                submission_type: "Online",
+                entry_options: {
+                    text_entry: true,
+                    website_url: true,
+                    media_recordings: true,
+                    student_annotation: true,
+                    file_uploads: true,
+                },
+                assign_to: ["Everyone"],
+                due: now,
+                available_from: now,
+                available_until: now,
+            };
+            const a = await assignmentClient.createAssignment(cid, newAssignment);
+            dispatch(addAssignment(a));
+            setAssignmentId(a._id);
+            setAssignment(a);
+        } else {
+            const assignments = await assignmentClient.getAssignments(cid as string);
+            dispatch(setAssignments(assignments));
+            const a = assignments.find((a: any) => a._id === assignmentId);
+            setAssignment(a);
+        }
+    };
     const saveAssignment = async (assignment: any) => {
         await assignmentClient.updateAssignment(cid, assignment);
         dispatch(updateAssignment(assignment));
     }
-    const createAssignmentForCourse = async () => {
-        if (!cid) return;
-        const newAssignment = {
-            course: cid,
-            title: "New Assignment",
-            description: "New Assignment Description",
-            points: 100,
-            assignment_group: "Assignments",
-            display_grade_as: "Points",
-            submission_type: "Online",
-            entry_options: {
-                text_entry: true,
-                website_url: true,
-                media_recordings: true,
-                student_annotation: true,
-                file_uploads: true,
-            },
-            assign_to: ["Everyone"],
-            due: now,
-            available_from: now,
-            available_until: now,
-        };
-        const assignment = await assignmentClient.createAssignment(cid, newAssignment);
-        console.log("Got Assignment ID", assignment?.id)
-        dispatch(addAssignment(assignment));
-        console.log("Got Assignment", assignment)
-        setAssignment(assignment);
-    };
-    const [assignment, setAssignment] = useState(assignments.find((a: any) => a._id === aid));
-    console.log(assignment?._id);
     useEffect(() => {
-        if (aid === "New") {
-            createAssignmentForCourse();
-            console.log("Got Assignment after", assignment)
-        }
+        fetchAssignments();
     }, []);
     return (
         <div id="wd-assignments-editor">
@@ -216,9 +218,7 @@ export default function AssignmentEditor() {
                 </div>
             </div>
             <div id="save-submit">
-                <SaveSubmitButtons cid={cid} aid={aid} addAssignment={() => {
-                    dispatch(addAssignment(assignment));
-                }} setAssignment={() => {
+                <SaveSubmitButtons cid={cid} aid={assignmentId} setAssignment={() => {
                     saveAssignment(assignment);
                 }}/>
             </div>
