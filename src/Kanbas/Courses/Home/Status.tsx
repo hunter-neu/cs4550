@@ -5,12 +5,15 @@ import {LiaFileImportSolid} from "react-icons/lia";
 import {RiBarChart2Fill} from "react-icons/ri";
 import {VscMegaphone} from "react-icons/vsc";
 import {IoIosNotifications} from "react-icons/io";
+import {useSelector} from "react-redux";
 
 export default function CourseStatus() {
+    const {currentUser} = useSelector((state: any) => state.accountReducer);
+    const isFaculty = currentUser.role === "FACULTY" || currentUser.role === "ADMIN";
     return (
         <div id="wd-course-status" style={{width: "300px"}}>
             <h2>Course Status</h2>
-            <div className="d-flex">
+            {isFaculty && <div className="d-flex">
                 <div className="w-50 pe-1">
                     <button className="btn btn-lg btn-secondary w-100 text-nowrap ">
                         <MdDoNotDisturbAlt className="me-2 fs-5"/> Unpublish
@@ -21,26 +24,26 @@ export default function CourseStatus() {
                         <FaCheckCircle className="me-2 fs-5"/> Publish
                     </button>
                 </div>
-            </div>
+            </div>}
             <br/>
-            <button className="btn btn-lg btn-secondary w-100 mt-1 text-start">
+            {isFaculty && <button className="btn btn-lg btn-secondary w-100 mt-1 text-start">
                 <BiImport className="me-2 fs-5"/> Import Existing Content
-            </button>
-            <button className="btn btn-lg btn-secondary w-100 mt-1 text-start">
+            </button>}
+            {isFaculty && <button className="btn btn-lg btn-secondary w-100 mt-1 text-start">
                 <LiaFileImportSolid className="me-2 fs-5"/> Import from Commons
-            </button>
-            <button className="btn btn-lg btn-secondary w-100 mt-1 text-start">
+            </button>}
+            {isFaculty && <button className="btn btn-lg btn-secondary w-100 mt-1 text-start">
                 <FaHome className="me-2 fs-5"/> Choose Home Page
-            </button>
+            </button>}
             <button className="btn btn-lg btn-secondary w-100 mt-1 text-start">
                 <RiBarChart2Fill className="me-2 fs-5"/> View Course Screen
             </button>
-            <button className="btn btn-lg btn-secondary w-100 mt-1 text-start">
+            {isFaculty && <button className="btn btn-lg btn-secondary w-100 mt-1 text-start">
                 <VscMegaphone className="me-2 fs-5"/> New Announcement
-            </button>
-            <button className="btn btn-lg btn-secondary w-100 mt-1 text-start">
+            </button>}
+            {isFaculty && <button className="btn btn-lg btn-secondary w-100 mt-1 text-start">
                 <RiBarChart2Fill className="me-2 fs-5"/> New Analytics
-            </button>
+            </button>}
             <button className="btn btn-lg btn-secondary w-100 mt-1 text-start">
                 <IoIosNotifications className="me-2 fs-5"/> View Course Notifications
             </button>
