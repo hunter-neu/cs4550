@@ -1,119 +1,91 @@
 import AssignmentControls from "./AssignmentControls";
 import {BsGripVertical} from "react-icons/bs";
-import ModuleControlButtons from "../Modules/ModuleControlButtons";
 import LessonControlButtons from "../Modules/LessonControlButtons";
-import {FaRegNewspaper} from "react-icons/fa";
 import {IoNewspaperOutline} from "react-icons/io5";
+import {useParams} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
+import {useEffect, useState} from "react";
+import * as assignmentClient from "./client";
+import {deleteAssignment, setAssignments} from "./reducer";
 
 export default function Assignments() {
+    const {cid} = useParams();
+    const {currentUser} = useSelector((state: any) => state.accountReducer);
+    const {assignments} = useSelector((state: any) => state.assignmentsReducer);
+    const dispatch = useDispatch();
+    const fetchAssignments = async () => {
+        const assignments = await assignmentClient.getAssignments(cid as string);
+        dispatch(setAssignments(assignments));
+    };
+    const removeAssignment = async (aid: any) => {
+        await assignmentClient.deleteAssignment(cid, aid);
+        dispatch(deleteAssignment(assignments));
+        window.location.reload();
+    };
+    useEffect(() => {
+        fetchAssignments();
+    }, []);
+    const parseDate = (d: string) => {
+        d = d.replace(/(\r\n|\n|\r|\s)/gm, "");
+        const date = new Date(d);
+        if (isNaN(date.getTime())) {
+            const re = /(\d+)-(\d+)-(\d+)T(\d+):(\d+):(\d+).*/;
+            const [, year, month, day, hour, minute, second] = re.exec(d) as any;
+            return `${month}/${day}/${year} at ${hour}:${minute}:${second}`;
+        }
+        const month = date.toLocaleString('default', {month: 'long'});
+        return `${month} ${date.getDate()} at ${date.getHours() % 12 || 12}:${date.getMinutes().toString().padStart(2, '0')} ${date.getHours() > 12 ? 'PM' : 'AM'}`;
+    }
     return (
         <div id="wd-assignments">
-            <AssignmentControls/>
-
+            {(currentUser.role === "FACULTY" || currentUser.role === "ADMIN") && <AssignmentControls/>}
             <ul id="wd-assignments" className="list-group rounded-0">
                 <li className="wd-module list-group-item p-0 mb-5 fs-5 border-gray">
                     <div className="wd-title p-3 ps-2 bg-white">
                         <BsGripVertical className="me-2 fs-3"/>
                         ASSIGNMENTS
-                        <ModuleControlButtons/>
                     </div>
                     <ul className="wd-assignments list-group rounded-0">
-                        <li className="wd-lesson list-group-item p-3 ps-1">
-                            <div className="row">
-                                <div className="col text-nowrap align-content-center">
-                                    <BsGripVertical className="me-2 fs-3"/><IoNewspaperOutline
-                                    className="me-2 fs-3 text-success"/>
-                                </div>
-                                <div className="col-10 p-0 m-0">
-                                    <table>
-                                        <tbody>
-                                        <tr><a className="wd-assignment-link m-0 fs-2 text-black"
-                                               href="#/Kanbas/Courses/1234/Assignments/123">A1</a></tr>
-                                        <tr>
-                                            <p className="fs-5 m-0">
-                                                <span className="text-danger">Multiple Modules</span> | <strong>Not
-                                                available
-                                                until</strong> February 6 at 12:00am |
-                                            </p>
-                                        </tr>
-                                        <tr>
-                                            <p className="fs-5 m-0">
-                                                <strong>Due</strong> March 13 at 11:59pm
-                                                | <strong>100 pts</strong>
-                                            </p>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <div className="col">
-                                    <LessonControlButtons/>
-                                </div>
-                            </div>
-                        </li>
-                        <li className="wd-lesson list-group-item p-3 ps-1 float">
-                            <div className="row">
-                                <div className="col text-nowrap align-content-center">
-                                    <BsGripVertical className="me-2 fs-3"/><IoNewspaperOutline
-                                    className="me-2 fs-3 text-success"/>
-                                </div>
-                                <div className="col-10 p-0 m-0">
-                                    <table>
-                                        <tbody>
-                                        <tr><a className="wd-assignment-link m-0 fs-2 text-black"
-                                               href="#/Kanbas/Courses/1234/Assignments/123">A2</a></tr>
-                                        <tr>
-                                            <p className="fs-5 m-0">
-                                                <span className="text-danger">Multiple Modules</span> | <strong>Not
-                                                available
-                                                until</strong> May 6 at 12:00am |
-                                            </p>
-                                        </tr>
-                                        <tr>
-                                            <p className="fs-5 m-0">
-                                                <strong>Due</strong> May 13 at 11:59pm
-                                                | <strong>100 pts</strong>
-                                            </p>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <div className="col">
-                                    <LessonControlButtons/>
-                                </div>
-                            </div>
-                        </li>
-                        <li className="wd-lesson list-group-item p-3 ps-1 float">
-                            <div className="row">
-                                <div className="col text-nowrap align-content-center">
-                                    <BsGripVertical className="me-2 fs-3"/><IoNewspaperOutline
-                                    className="me-2 fs-3 text-success"/>
-                                </div>
-                                <div className="col-10 p-0 m-0">
-                                    <table>
-                                        <tbody>
-                                        <tr><a className="wd-assignment-link m-0 fs-2 text-black"
-                                               href="#/Kanbas/Courses/1234/Assignments/123">A3</a></tr>
-                                        <tr>
-                                            <p className="fs-5 m-0">
-                                                <span className="text-danger">Multiple Modules</span> | <strong>Not
-                                                available
-                                                until</strong> May 8 at 12:00pm |
-                                            </p>
-                                        </tr>
-                                        <tr>
-                                            <p className="fs-5 m-0">
-                                                <strong>Due</strong> May 27 at 11:59pm
-                                                | <strong>100 pts</strong>
-                                            </p>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <div className="col">
-                                    <LessonControlButtons/>
-                                </div>
-                            </div>
-                        </li>
+                        {assignments
+                            .map((assignment: any) => (
+                                <li className="wd-lesson list-group-item p-3 ps-1">
+                                    <div className="row">
+                                        <div className="col text-nowrap align-content-center">
+                                            <BsGripVertical className="me-2 fs-3"/><IoNewspaperOutline
+                                            className="me-2 fs-3 text-success"/>
+                                        </div>
+                                        <div className="col-9 p-0 m-0">
+                                            <table>
+                                                <tbody>
+                                                <tr><a className="wd-assignment-link m-0 fs-2 text-black"
+                                                       href={`#/Kanbas/Courses/${cid}/Assignments/${assignment._id}`}>{assignment.title}</a>
+                                                </tr>
+                                                <tr>
+                                                    <p className="fs-5 m-0">
+                                                        <span className="text-danger">Multiple Modules</span> | <strong>Not
+                                                        available
+                                                        until</strong> {parseDate(assignment.available_from)} |
+                                                    </p>
+                                                </tr>
+                                                <tr>
+                                                    <p className="fs-5 m-0">
+                                                        <strong>Due</strong> {parseDate(assignment.due)} | <strong>100
+                                                        pts</strong>
+                                                    </p>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div className="col-2">
+                                            <LessonControlButtons
+                                                assignment={assignment}
+                                                deleteAssignment={(aid) => {
+                                                    removeAssignment(aid);
+                                                }}/>
+                                        </div>
+                                    </div>
+                                </li>
+                            ))}
                     </ul>
                 </li>
             </ul>

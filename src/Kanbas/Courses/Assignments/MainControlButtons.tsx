@@ -7,7 +7,7 @@ export default function MainControlButtons() {
         <div className="float-end">
             <GreenCheckmark/>
             <IoEllipsisVertical className="fs-4"/>
-            <FaPlus />
+            <FaPlus/>
         </div>
     );
 }
