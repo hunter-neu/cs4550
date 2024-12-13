@@ -4,10 +4,11 @@ import {useState} from "react";
 import {addEnrollment, deleteEnrollment} from "./Courses/People/reducer";
 
 export default function Dashboard(
-    {courses, course, setCourse, addNewCourse, deleteCourse, updateCourse}: {
+    {courses, course, setCourse, addNewCourse, deleteCourse, updateCourse, enrolling, setEnrolling, updateEnrollment}: {
         courses: any[]; course: any; setCourse: (course: any) => void;
         addNewCourse: () => void; deleteCourse: (course: any) => void,
-        updateCourse: () => void
+        updateCourse: () => void, enrolling: boolean; setEnrolling: (enrolling: boolean) => void;
+        updateEnrollment: (courseId: string, enrolled: boolean) => void
     }
 ) {
     const {currentUser} = useSelector((state: any) => state.accountReducer);
@@ -22,9 +23,16 @@ export default function Dashboard(
                 enrollment.course === course._id
         )
     }
+    console.log("Enrollments", enrollments);
+    console.log("Courses", courses);
     return (
         <div id="wd-dashboard">
-            <h1 id="wd-dashboard-title">Dashboard</h1>
+            <h1 id="wd-dashboard-title">
+                Dashboard
+                <button onClick={() => setEnrolling(!enrolling)} className="float-end btn btn-primary">
+                    {enrolling ? "My Courses" : "All Courses"}
+                </button>
+            </h1>
             <hr/>
             {isFaculty && <div id="new-course-stuff">
                 <h5>New Course
@@ -55,13 +63,6 @@ export default function Dashboard(
             <div id="wd-dashboard-courses" className="row">
                 <div className="row row-cols-1 row-cols-md-5 g-4">
                     {courses
-                        .sort((c1, c2) => {
-                            if (getEnrollment(c1)) {
-                                return getEnrollment(c2) ? 0 : -1;
-                            } else {
-                                return getEnrollment(c2) ? 1 : 0;
-                            }
-                        })
                         .map((course) => (
                             <div className="wd-dashboard-course col" style={{width: "300px"}}>
                                 <div className="card h-100 rounded-3 overflow-hidden">
@@ -71,6 +72,20 @@ export default function Dashboard(
                                         <img alt="image" src="/images/reactjs.png" width="100%" height={160}/>
                                         <div className="card-body">
                                             <h5 className="wd-dashboard-course-title card-title">
+                                                {enrolling && (
+                                                    <button
+                                                        onClick={(event) => {
+                                                            event.preventDefault();
+                                                            updateEnrollment(course._id, !course.enrolled);
+                                                            dispatch(addEnrollment({
+                                                                user: currentUser._id,
+                                                                course: course._id
+                                                            }))
+                                                        }}
+                                                        className={`btn ${course.enrolled ? "btn-danger" : "btn-success"} float-end`}>
+                                                        {course.enrolled ? "Unenroll" : "Enroll"}
+                                                    </button>
+                                                )}
                                                 {course.name}
                                             </h5>
                                             <br/>
@@ -95,24 +110,6 @@ export default function Dashboard(
                                                         }}
                                                         className="btn btn-warning me-2 float-end">
                                                     Edit
-                                                </button>}
-                                            {!isFaculty && showAll &&
-                                                <button id="wd-edit-course-click"
-                                                        onClick={(event) => {
-                                                            event.preventDefault();
-                                                            console.log("Enrollment course:", course)
-                                                            const enrollment = getEnrollment(course);
-                                                            if (!enrollment) {
-                                                                dispatch(addEnrollment({
-                                                                    user: currentUser._id,
-                                                                    course: course._id
-                                                                }))
-                                                            } else {
-                                                                dispatch(deleteEnrollment(enrollment._id));
-                                                            }
-                                                        }}
-                                                        className="btn btn-warning me-2 float-end">
-                                                    {getEnrollment(course) ? "Unenroll" : "Enroll"}
                                                 </button>}
                                         </div>
                                     </Link>
